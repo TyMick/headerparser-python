@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- prettier-ignore -->
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="shortcut icon" href="https://cdn.glitch.com/e1c8387f-9c1d-4683-84b5-32c40c510abd%2Ffavicon.ico?v=1579979902340" type="image/x-icon" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/default.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
+
+    <title>Python header parser microservice – Ty Mick</title>
+  </head>
+
+  <body style="background-color: #dee2e6;">
+    <div class="container-md my-5">
+      <h1 class="mb-4">Python header parser microservice</h1>
+
+      <!-- API test front end -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="mb-3">Test this API:</h5>
+
+          <form id="apiTest" class="form-inline mb-4">
+            <label class="sr-only" for="apiUrl">API URL</label>
+            <input
+              type="text"
+              id="apiUrl"
+              class="form-control mb-2 mr-sm-2"
+              value="/api/whoami"
+              style="width: 10em;"
+              disabled
+            />
+
+            <button type="submit" class="btn btn-primary mb-2">GET</button>
+          </form>
+
+          <h5>API output:</h5>
+
+          <div class="card">
+            <pre id="apiOutput" class="hljs bg-white mb-0">&#8203;</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Explanation -->
+      <p class="lead font-italic">
+        View the source on
+        <a href="https://github.com/tywmick/headerparser-python">GitHub</a>
+        or <a href="https://glitch.com/edit/#!/ty-headerparser-python">Glitch</a>.
+      </p>
+
+      <p>
+        This is a Python/<a href="https://flask.palletsprojects.com/en/1.1.x/"
+          >Flask</a
+        >
+        port of my
+        <a href="https://ty-headerparser.glitch.me"
+          >Node.js header parser microservice project</a
+        >, which was originally built to fulfill the following user story:
+      </p>
+
+      <ol>
+        <li>
+          I can get the IP address, preferred languages (from header
+          <code>Accept-Language</code>) and system infos (from header
+          <code>User-Agent</code>) for my device.
+          <ul>
+            <li>
+              Example usage:
+              <ul>
+                <li><code>[base url]/api/whoami</code></li>
+              </ul>
+            </li>
+            <li>
+              Example output:
+              <ul>
+                <li>
+                  <samp
+                    >{"ipaddress": "::ffff:159.20.14.100", "language":
+                    "en-US,en;q=0.5", "software": "Mozilla/5.0 (X11; Ubuntu;
+                    Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0"}</samp
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Glitch button -->
+    <div
+      class="glitchButton"
+      style="position:absolute;top:20px;right:20px;"
+    ></div>
+    <script src="https://button.glitch.me/button.js"></script>
+
+    <!-- API test script -->
+    <script>
+      $(function() {
+        $("#apiTest").submit(function() {
+          event.preventDefault();
+          $("button").attr("disabled", true);
+          $("button", this).html(
+            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span class="sr-only">Uploading...</span>'
+          );
+          $.ajax({
+            url: "/api/whoami",
+            type: "get",
+            success: function(result) {
+              $("#apiOutput").text(JSON.stringify(result, null, 2));
+              hljs.highlightBlock(document.getElementById("apiOutput"));
+              $("#apiTest button").html("GET");
+              $("button").removeAttr("disabled");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
