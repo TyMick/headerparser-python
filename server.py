@@ -15,7 +15,7 @@ def hello():
     return jsonify(greeting="hello API")
 
 @app.route("/api/whoami")
-def timestamp():
+def whoami():
     return jsonify(ipaddress=request.access_route[-1],
                    language=str(request.accept_languages),
                    software=str(request.user_agent))
